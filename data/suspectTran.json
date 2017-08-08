@@ -1,0 +1,717 @@
+	
+var susTranArray = [
+  {
+    "keys": [
+      "customer_name",
+      "store_name",
+      "amount",
+      "transaction_time"
+    ],
+    "length": 4,
+    "_fields": [
+      "Olivia",
+      "Wallmart",
+      "231",
+      "7/12/2014"
+    ],
+    "_fieldLookup": {
+      "customer_name": 0,
+      "store_name": 1,
+      "amount": 2,
+      "transaction_time": 3
+    }
+  },
+  {
+    "keys": [
+      "customer_name",
+      "store_name",
+      "amount",
+      "transaction_time"
+    ],
+    "length": 4,
+    "_fields": [
+      "Olivia",
+      "Wallmart",
+      "231",
+      "7/12/2014"
+    ],
+    "_fieldLookup": {
+      "customer_name": 0,
+      "store_name": 1,
+      "amount": 2,
+      "transaction_time": 3
+    }
+  },
+  {
+    "keys": [
+      "customer_name",
+      "store_name",
+      "amount",
+      "transaction_time"
+    ],
+    "length": 4,
+    "_fields": [
+      "Olivia",
+      "Wallmart",
+      "231",
+      "7/12/2014"
+    ],
+    "_fieldLookup": {
+      "customer_name": 0,
+      "store_name": 1,
+      "amount": 2,
+      "transaction_time": 3
+    }
+  },
+  {
+    "keys": [
+      "customer_name",
+      "store_name",
+      "amount",
+      "transaction_time"
+    ],
+    "length": 4,
+    "_fields": [
+      "Madison",
+      "Wallmart",
+      "91",
+      "6/29/2014"
+    ],
+    "_fieldLookup": {
+      "customer_name": 0,
+      "store_name": 1,
+      "amount": 2,
+      "transaction_time": 3
+    }
+  },
+  {
+    "keys": [
+      "customer_name",
+      "store_name",
+      "amount",
+      "transaction_time"
+    ],
+    "length": 4,
+    "_fields": [
+      "Madison",
+      "Wallmart",
+      "91",
+      "6/29/2014"
+    ],
+    "_fieldLookup": {
+      "customer_name": 0,
+      "store_name": 1,
+      "amount": 2,
+      "transaction_time": 3
+    }
+  },
+  {
+    "keys": [
+      "customer_name",
+      "store_name",
+      "amount",
+      "transaction_time"
+    ],
+    "length": 4,
+    "_fields": [
+      "Madison",
+      "Wallmart",
+      "91",
+      "6/29/2014"
+    ],
+    "_fieldLookup": {
+      "customer_name": 0,
+      "store_name": 1,
+      "amount": 2,
+      "transaction_time": 3
+    }
+  },
+  {
+    "keys": [
+      "customer_name",
+      "store_name",
+      "amount",
+      "transaction_time"
+    ],
+    "length": 4,
+    "_fields": [
+      "Paul",
+      "Starbucks",
+      "239",
+      "5/15/2014"
+    ],
+    "_fieldLookup": {
+      "customer_name": 0,
+      "store_name": 1,
+      "amount": 2,
+      "transaction_time": 3
+    }
+  },
+  {
+    "keys": [
+      "customer_name",
+      "store_name",
+      "amount",
+      "transaction_time"
+    ],
+    "length": 4,
+    "_fields": [
+      "Marc",
+      "American Apparel",
+      "336",
+      "4/3/2014"
+    ],
+    "_fieldLookup": {
+      "customer_name": 0,
+      "store_name": 1,
+      "amount": 2,
+      "transaction_time": 3
+    }
+  },
+  {
+    "keys": [
+      "customer_name",
+      "store_name",
+      "amount",
+      "transaction_time"
+    ],
+    "length": 4,
+    "_fields": [
+      "Marc",
+      "American Apparel",
+      "336",
+      "4/3/2014"
+    ],
+    "_fieldLookup": {
+      "customer_name": 0,
+      "store_name": 1,
+      "amount": 2,
+      "transaction_time": 3
+    }
+  },
+  {
+    "keys": [
+      "customer_name",
+      "store_name",
+      "amount",
+      "transaction_time"
+    ],
+    "length": 4,
+    "_fields": [
+      "Paul",
+      "Just Brew It",
+      "986",
+      "4/17/2014"
+    ],
+    "_fieldLookup": {
+      "customer_name": 0,
+      "store_name": 1,
+      "amount": 2,
+      "transaction_time": 3
+    }
+  },
+  {
+    "keys": [
+      "customer_name",
+      "store_name",
+      "amount",
+      "transaction_time"
+    ],
+    "length": 4,
+    "_fields": [
+      "Paul",
+      "Just Brew It",
+      "986",
+      "4/17/2014"
+    ],
+    "_fieldLookup": {
+      "customer_name": 0,
+      "store_name": 1,
+      "amount": 2,
+      "transaction_time": 3
+    }
+  },
+  {
+    "keys": [
+      "customer_name",
+      "store_name",
+      "amount",
+      "transaction_time"
+    ],
+    "length": 4,
+    "_fields": [
+      "Marc",
+      "Amazon",
+      "134",
+      "4/14/2014"
+    ],
+    "_fieldLookup": {
+      "customer_name": 0,
+      "store_name": 1,
+      "amount": 2,
+      "transaction_time": 3
+    }
+  },
+  {
+    "keys": [
+      "customer_name",
+      "store_name",
+      "amount",
+      "transaction_time"
+    ],
+    "length": 4,
+    "_fields": [
+      "Marc",
+      "Amazon",
+      "134",
+      "4/14/2014"
+    ],
+    "_fieldLookup": {
+      "customer_name": 0,
+      "store_name": 1,
+      "amount": 2,
+      "transaction_time": 3
+    }
+  },
+  {
+    "keys": [
+      "customer_name",
+      "store_name",
+      "amount",
+      "transaction_time"
+    ],
+    "length": 4,
+    "_fields": [
+      "Paul",
+      "Sears",
+      "475",
+      "3/28/2014"
+    ],
+    "_fieldLookup": {
+      "customer_name": 0,
+      "store_name": 1,
+      "amount": 2,
+      "transaction_time": 3
+    }
+  },
+  {
+    "keys": [
+      "customer_name",
+      "store_name",
+      "amount",
+      "transaction_time"
+    ],
+    "length": 4,
+    "_fields": [
+      "Paul",
+      "Sears",
+      "475",
+      "3/28/2014"
+    ],
+    "_fieldLookup": {
+      "customer_name": 0,
+      "store_name": 1,
+      "amount": 2,
+      "transaction_time": 3
+    }
+  },
+  {
+    "keys": [
+      "customer_name",
+      "store_name",
+      "amount",
+      "transaction_time"
+    ],
+    "length": 4,
+    "_fields": [
+      "Paul",
+      "Sears",
+      "475",
+      "3/28/2014"
+    ],
+    "_fieldLookup": {
+      "customer_name": 0,
+      "store_name": 1,
+      "amount": 2,
+      "transaction_time": 3
+    }
+  },
+  {
+    "keys": [
+      "customer_name",
+      "store_name",
+      "amount",
+      "transaction_time"
+    ],
+    "length": 4,
+    "_fields": [
+      "Marc",
+      "Wallmart",
+      "964",
+      "3/22/2014"
+    ],
+    "_fieldLookup": {
+      "customer_name": 0,
+      "store_name": 1,
+      "amount": 2,
+      "transaction_time": 3
+    }
+  },
+  {
+    "keys": [
+      "customer_name",
+      "store_name",
+      "amount",
+      "transaction_time"
+    ],
+    "length": 4,
+    "_fields": [
+      "Marc",
+      "Wallmart",
+      "964",
+      "3/22/2014"
+    ],
+    "_fieldLookup": {
+      "customer_name": 0,
+      "store_name": 1,
+      "amount": 2,
+      "transaction_time": 3
+    }
+  },
+  {
+    "keys": [
+      "customer_name",
+      "store_name",
+      "amount",
+      "transaction_time"
+    ],
+    "length": 4,
+    "_fields": [
+      "Marc",
+      "Wallmart",
+      "964",
+      "3/22/2014"
+    ],
+    "_fieldLookup": {
+      "customer_name": 0,
+      "store_name": 1,
+      "amount": 2,
+      "transaction_time": 3
+    }
+  },
+  {
+    "keys": [
+      "customer_name",
+      "store_name",
+      "amount",
+      "transaction_time"
+    ],
+    "length": 4,
+    "_fields": [
+      "Paul",
+      "Wallmart",
+      "654",
+      "3/20/2014"
+    ],
+    "_fieldLookup": {
+      "customer_name": 0,
+      "store_name": 1,
+      "amount": 2,
+      "transaction_time": 3
+    }
+  },
+  {
+    "keys": [
+      "customer_name",
+      "store_name",
+      "amount",
+      "transaction_time"
+    ],
+    "length": 4,
+    "_fields": [
+      "Paul",
+      "Wallmart",
+      "654",
+      "3/20/2014"
+    ],
+    "_fieldLookup": {
+      "customer_name": 0,
+      "store_name": 1,
+      "amount": 2,
+      "transaction_time": 3
+    }
+  },
+  {
+    "keys": [
+      "customer_name",
+      "store_name",
+      "amount",
+      "transaction_time"
+    ],
+    "length": 4,
+    "_fields": [
+      "Paul",
+      "Wallmart",
+      "654",
+      "3/20/2014"
+    ],
+    "_fieldLookup": {
+      "customer_name": 0,
+      "store_name": 1,
+      "amount": 2,
+      "transaction_time": 3
+    }
+  },
+  {
+    "keys": [
+      "customer_name",
+      "store_name",
+      "amount",
+      "transaction_time"
+    ],
+    "length": 4,
+    "_fields": [
+      "Madison",
+      "Subway",
+      "352",
+      "12/16/2014"
+    ],
+    "_fieldLookup": {
+      "customer_name": 0,
+      "store_name": 1,
+      "amount": 2,
+      "transaction_time": 3
+    }
+  },
+  {
+    "keys": [
+      "customer_name",
+      "store_name",
+      "amount",
+      "transaction_time"
+    ],
+    "length": 4,
+    "_fields": [
+      "Madison",
+      "Subway",
+      "352",
+      "12/16/2014"
+    ],
+    "_fieldLookup": {
+      "customer_name": 0,
+      "store_name": 1,
+      "amount": 2,
+      "transaction_time": 3
+    }
+  },
+  {
+    "keys": [
+      "customer_name",
+      "store_name",
+      "amount",
+      "transaction_time"
+    ],
+    "length": 4,
+    "_fields": [
+      "Madison",
+      "Subway",
+      "352",
+      "12/16/2014"
+    ],
+    "_fieldLookup": {
+      "customer_name": 0,
+      "store_name": 1,
+      "amount": 2,
+      "transaction_time": 3
+    }
+  },
+  {
+    "keys": [
+      "customer_name",
+      "store_name",
+      "amount",
+      "transaction_time"
+    ],
+    "length": 4,
+    "_fields": [
+      "Madison",
+      "Subway",
+      "352",
+      "12/16/2014"
+    ],
+    "_fieldLookup": {
+      "customer_name": 0,
+      "store_name": 1,
+      "amount": 2,
+      "transaction_time": 3
+    }
+  },
+  {
+    "keys": [
+      "customer_name",
+      "store_name",
+      "amount",
+      "transaction_time"
+    ],
+    "length": 4,
+    "_fields": [
+      "Madison",
+      "MacDonalds",
+      "630",
+      "10/6/2014"
+    ],
+    "_fieldLookup": {
+      "customer_name": 0,
+      "store_name": 1,
+      "amount": 2,
+      "transaction_time": 3
+    }
+  },
+  {
+    "keys": [
+      "customer_name",
+      "store_name",
+      "amount",
+      "transaction_time"
+    ],
+    "length": 4,
+    "_fields": [
+      "Madison",
+      "MacDonalds",
+      "630",
+      "10/6/2014"
+    ],
+    "_fieldLookup": {
+      "customer_name": 0,
+      "store_name": 1,
+      "amount": 2,
+      "transaction_time": 3
+    }
+  },
+  {
+    "keys": [
+      "customer_name",
+      "store_name",
+      "amount",
+      "transaction_time"
+    ],
+    "length": 4,
+    "_fields": [
+      "Madison",
+      "MacDonalds",
+      "630",
+      "10/6/2014"
+    ],
+    "_fieldLookup": {
+      "customer_name": 0,
+      "store_name": 1,
+      "amount": 2,
+      "transaction_time": 3
+    }
+  },
+  {
+    "keys": [
+      "customer_name",
+      "store_name",
+      "amount",
+      "transaction_time"
+    ],
+    "length": 4,
+    "_fields": [
+      "Madison",
+      "MacDonalds",
+      "630",
+      "10/6/2014"
+    ],
+    "_fieldLookup": {
+      "customer_name": 0,
+      "store_name": 1,
+      "amount": 2,
+      "transaction_time": 3
+    }
+  },
+  {
+    "keys": [
+      "customer_name",
+      "store_name",
+      "amount",
+      "transaction_time"
+    ],
+    "length": 4,
+    "_fields": [
+      "Olivia",
+      "Soccer for the City",
+      "924",
+      "10/4/2014"
+    ],
+    "_fieldLookup": {
+      "customer_name": 0,
+      "store_name": 1,
+      "amount": 2,
+      "transaction_time": 3
+    }
+  },
+  {
+    "keys": [
+      "customer_name",
+      "store_name",
+      "amount",
+      "transaction_time"
+    ],
+    "length": 4,
+    "_fields": [
+      "Olivia",
+      "Soccer for the City",
+      "924",
+      "10/4/2014"
+    ],
+    "_fieldLookup": {
+      "customer_name": 0,
+      "store_name": 1,
+      "amount": 2,
+      "transaction_time": 3
+    }
+  },
+  {
+    "keys": [
+      "customer_name",
+      "store_name",
+      "amount",
+      "transaction_time"
+    ],
+    "length": 4,
+    "_fields": [
+      "Olivia",
+      "Soccer for the City",
+      "924",
+      "10/4/2014"
+    ],
+    "_fieldLookup": {
+      "customer_name": 0,
+      "store_name": 1,
+      "amount": 2,
+      "transaction_time": 3
+    }
+  },
+  {
+    "keys": [
+      "customer_name",
+      "store_name",
+      "amount",
+      "transaction_time"
+    ],
+    "length": 4,
+    "_fields": [
+      "Olivia",
+      "Soccer for the City",
+      "924",
+      "10/4/2014"
+    ],
+    "_fieldLookup": {
+      "customer_name": 0,
+      "store_name": 1,
+      "amount": 2,
+      "transaction_time": 3
+    }
+  }
+]

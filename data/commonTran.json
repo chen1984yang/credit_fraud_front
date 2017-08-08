@@ -1,0 +1,213 @@
+	
+var commonTranArray= [
+  {
+    "keys": [
+      "suspicious_store",
+      "count",
+      "victims"
+    ],
+    "length": 3,
+    "_fields": [
+      "Wallmart",
+      {
+        "low": 4,
+        "high": 0
+      },
+      [
+        "Olivia",
+        "Madison",
+        "Marc",
+        "Paul"
+      ]
+    ],
+    "_fieldLookup": {
+      "suspicious_store": 0,
+      "count": 1,
+      "victims": 2
+    }
+  },
+  {
+    "keys": [
+      "suspicious_store",
+      "count",
+      "victims"
+    ],
+    "length": 3,
+    "_fields": [
+      "Just Brew It",
+      {
+        "low": 1,
+        "high": 0
+      },
+      [
+        "Paul"
+      ]
+    ],
+    "_fieldLookup": {
+      "suspicious_store": 0,
+      "count": 1,
+      "victims": 2
+    }
+  },
+  {
+    "keys": [
+      "suspicious_store",
+      "count",
+      "victims"
+    ],
+    "length": 3,
+    "_fields": [
+      "American Apparel",
+      {
+        "low": 1,
+        "high": 0
+      },
+      [
+        "Marc"
+      ]
+    ],
+    "_fieldLookup": {
+      "suspicious_store": 0,
+      "count": 1,
+      "victims": 2
+    }
+  },
+  {
+    "keys": [
+      "suspicious_store",
+      "count",
+      "victims"
+    ],
+    "length": 3,
+    "_fields": [
+      "Sears",
+      {
+        "low": 1,
+        "high": 0
+      },
+      [
+        "Paul"
+      ]
+    ],
+    "_fieldLookup": {
+      "suspicious_store": 0,
+      "count": 1,
+      "victims": 2
+    }
+  },
+  {
+    "keys": [
+      "suspicious_store",
+      "count",
+      "victims"
+    ],
+    "length": 3,
+    "_fields": [
+      "Soccer for the City",
+      {
+        "low": 1,
+        "high": 0
+      },
+      [
+        "Olivia"
+      ]
+    ],
+    "_fieldLookup": {
+      "suspicious_store": 0,
+      "count": 1,
+      "victims": 2
+    }
+  },
+  {
+    "keys": [
+      "suspicious_store",
+      "count",
+      "victims"
+    ],
+    "length": 3,
+    "_fields": [
+      "Amazon",
+      {
+        "low": 1,
+        "high": 0
+      },
+      [
+        "Marc"
+      ]
+    ],
+    "_fieldLookup": {
+      "suspicious_store": 0,
+      "count": 1,
+      "victims": 2
+    }
+  },
+  {
+    "keys": [
+      "suspicious_store",
+      "count",
+      "victims"
+    ],
+    "length": 3,
+    "_fields": [
+      "MacDonalds",
+      {
+        "low": 1,
+        "high": 0
+      },
+      [
+        "Madison"
+      ]
+    ],
+    "_fieldLookup": {
+      "suspicious_store": 0,
+      "count": 1,
+      "victims": 2
+    }
+  },
+  {
+    "keys": [
+      "suspicious_store",
+      "count",
+      "victims"
+    ],
+    "length": 3,
+    "_fields": [
+      "Starbucks",
+      {
+        "low": 1,
+        "high": 0
+      },
+      [
+        "Paul"
+      ]
+    ],
+    "_fieldLookup": {
+      "suspicious_store": 0,
+      "count": 1,
+      "victims": 2
+    }
+  },
+  {
+    "keys": [
+      "suspicious_store",
+      "count",
+      "victims"
+    ],
+    "length": 3,
+    "_fields": [
+      "Subway",
+      {
+        "low": 1,
+        "high": 0
+      },
+      [
+        "Madison"
+      ]
+    ],
+    "_fieldLookup": {
+      "suspicious_store": 0,
+      "count": 1,
+      "victims": 2
+    }
+  }
+]

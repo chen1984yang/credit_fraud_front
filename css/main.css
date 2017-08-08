@@ -1,0 +1,174 @@
+body {
+    font-family: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    color: #676a6c;
+}
+.chart-container{
+	position: relative;
+}
+
+.link.topContext{
+	/*
+	stroke:#86B404;*/
+	stroke:#bdbdbd;
+	stroke-width:3px;
+	stroke-opacity: .2;
+}
+
+.link.topFocus{
+    stroke:#99c0e5;
+	stroke-width:3px;
+	stroke-opacity: .5;
+}
+.link.bottomFocus{
+    stroke:#FDA4A3;
+	stroke-width:3px;
+	stroke-opacity: .9;
+}
+
+.link.bottomContext{
+	stroke:#FDA4A3;
+	stroke-width:3px;
+	stroke-opacity: .2;
+}
+
+.chartView{
+	height: 500px;
+  width: 1000px;
+}
+
+.bottomArea .tranNode{
+	fill:#FDA4A3;
+	stroke:#B43104;
+	stroke-opacity:.6;
+}
+
+.tranNode:hover {
+	stroke:#000000 !important;
+	stroke-width:2px !important;
+	stroke-opacity:.9 !important;
+}
+
+.topArea .tranNode.topFocus{
+	fill:#99c0e5;
+	stroke:#045FB4;
+	stroke-opacity:.6;
+}
+
+.topArea .tranNode.topContext{
+	fill:#BCF5A9;
+
+	stroke:#04B45F;
+	stroke-opacity:.6;
+}
+
+.nonfocusLayer .layerBackground.even{
+	fill:#A5DF00;
+	fill-opacity:.3;
+}
+
+.nonfocusLayer .layerBackground.odd{
+	fill:#86B404;
+	fill-opacity:.5;
+}
+
+.focusLayer .layerBackground{
+	fill:#088A85;
+	fill-opacity:.8;
+}
+
+
+.layerBackground{
+	stroke:#BDBDBD !important;
+	stroke-opacity:.4 !important;
+}
+
+
+.bottomArea .layerBackground.odd{
+	fill:#F5A9A9;
+	fill-opacity:.3;
+}
+.bottomArea .layerBackground.even{
+	fill:#F78181;
+	fill-opacity:.5;
+}
+
+.layerBackground{
+	opacity: 0.3;
+}
+.areaBorder{
+	stroke:#000000;
+
+}
+
+.layerBackground.midArea{
+	fill:#CEECF5;
+}
+
+.dot{
+	fill:#81DAF5;
+	fill-opacity:.3;
+	stroke:#81DAF5;
+}
+/*
+.tranLink{
+	stroke:#8181F7;
+}*/
+
+.xaxis path{
+	display:none;
+}
+
+.link.fraudLink{
+	stroke:blue;
+}
+
+.rowLabel{
+	font-size: 12px !important;
+}
+
+.rowLabelBackground{
+	fill:none;
+	
+	stroke:#BDBDBD;
+	stroke-opacity:.4;
+	/*
+	stroke:red;*/
+}
+.navBar{
+	fill:#FACC2E;
+	stroke:#B18904;
+	opacity:.4;
+}
+
+.navBar:hover{
+	opacity:.8 !important;
+}
+
+.tickLine{
+	stroke:#6E6E6E;
+	stroke-width:.5px;
+	stroke-opacity:.7;
+}
+
+.zoomTickLine{
+	stroke:#A4A4A4;
+	stroke-width:1px;
+	stroke-opacity:.8;
+	stroke-dasharray:[5,5];
+}
+.zoomTimeLabel{
+	font-size: 9px;
+}
+
+.contextLink{
+	stroke:##A4A4A4;
+}
+
+.fraudAmountMark{
+	fill:#8A0808;
+}
+
+.tick text{
+	font-size: 10px;
+}
