@@ -42,7 +42,14 @@
                     G: parseInt(g, 16),
                     B: parseInt(b, 16)
                 };
-            }            
+            };
+            var getPeopleDataByName = function(name, data){
+              var result = data.filter(function(d){
+                return d.customer_name===name;
+              });
+              return result[0];
+            };
+
         return {
             getGrayScale:function(color){
               var components = getRGBComponents(color); 
@@ -74,7 +81,7 @@
               }
               return ticks;
             },
-            groupTranArrayByPeople:function(tranArray){
+            groupTranArrayByPeople:function(tranArray, peopleData){
               var peopleArray = {};
               var result = [];
               tranArray.forEach(function(t){
@@ -85,6 +92,16 @@
                 }
               });
               var keys = Object.keys(peopleArray);
+              if(peopleData){
+                keys.sort(function(a,b){
+                  var p_a = getPeopleDataByName(a,peopleData);
+                  var p_b = getPeopleDataByName(b,peopleData);
+                  var first_sus_a = p_a.suspectTran[0].timeStamp;
+                  var first_sus_b = p_b.suspectTran[0].timeStamp;
+                  return first_sus_a- first_sus_b;
+                  //var suspect_a = p_a.
+                });
+              }
               keys.forEach(function(k){
                 result.push(peopleArray[k]);
               });              
@@ -119,6 +136,19 @@
                 store.suspectTran = resultArray;
               }
               //return resultArray;
+
+            },
+            generateConnectPath:function(x,y, array, isLeft,labelWidth, areaTopY){
+              var bottomPosY = d3.max(array, function(d){
+                return d.y+d.cellHeight+(areaTopY||0);
+              });
+              var topPosY = d3.min(array, function(d){
+                return d.y+(areaTopY||0);
+              });
+              var xpos = isLeft?array[0].x:(array[0].x+array[0].cellWidth);
+              xpos+=labelWidth;
+              var result =  [[xpos,topPosY],[x,y],[xpos,bottomPosY]];
+              return result;
 
             },
           wrapSVGText:function(text, width, lineNum){

@@ -33,7 +33,14 @@ VIS.CHART.WIDGET.creditVisWidget = function (options) {
         fraudAmountMarkHeight:5,
         enableWeightedLine:true,
         linkWidthRate:.6,
-        tickBarMarginRate:0.1
+        tickBarMarginRate:0.1,
+        minLayerNoDistortion:30,
+        linkConnectOffsetDist:5,
+        topAreaNodeColor:'#045FB4',
+        bottomAreaNodeColor:'#FDA4A3',
+        minFocusLinkWidth:1.5,
+        maxFocusLinkWidth:3,
+        oneSideTickCount:12
     };
 
     function CreditVis(options) {
@@ -67,6 +74,24 @@ VIS.CHART.WIDGET.creditVisWidget = function (options) {
             .attr('height', self.chartHeight + self.settings.margin.top + self.settings.margin.bottom)
             .append('g')
             .attr('transform','translate('+self.settings.margin.left+','+self.settings.margin.top+')');
+
+            var gradient = self.chart.append("svg:defs")
+                .append("svg:linearGradient")
+                .attr("id", "gradient")
+                .attr("x1", "50%")
+                .attr("y1", "0%")
+                .attr("x2", "50%")
+                .attr("y2", "100%")
+                .attr("spreadMethod", "pad");
+             gradient.append("svg:stop")
+                .attr("offset", "0%")
+                .attr("stop-color", self.settings.topAreaNodeColor)
+                .attr("stop-opacity", 1);
+
+            gradient.append("svg:stop")
+                .attr("offset", "100%")
+                .attr("stop-color", self.settings.bottomAreaNodeColor)
+                .attr("stop-opacity", 1);                            
 
             self._processTime();
             self.middleAreaHeight = self.chartHeight*self.settings.peopleAreaHeightRate;
@@ -124,11 +149,13 @@ VIS.CHART.WIDGET.creditVisWidget = function (options) {
                 .domain(self.timeTicks)
                 .rangeBands([0, self.chartWidth]);
             var tickWidth= Math.floor(self.chartWidth/self.timeTicks.length);
-            self.timeScaleFisheye_bottom = d3.fisheye.scale(d3.scale.linear).domain([0, self.timeTicks[(self.timeTicks.length-1)]]).range([0, self.chartWidth]).distortion(0);
+            self.timeScaleFisheye_bottom = d3.fisheye.scale(d3.scale.linear).domain([0, self.timeTicks.length]).range([0, self.chartWidth]).distortion(0);
+            //self.timeScaleFisheye_bottom = d3.fisheye.scale(d3.scale.linear).domain([0, self.timeTicks[(self.timeTicks.length-1)]]).range([0, self.chartWidth]).distortion(0);
             //self.timeScaleFisheye_bottom = d3.fisheye.scale(d3.scale.identity).domain([0, self.chartWidth]).distortion(0);
             //self.timeSteps_bottom =  d3.range(0, self.chartWidth, tickWidth);
+            self.timeScaleFisheye_top = d3.fisheye.scale(d3.scale.linear).domain([0,self.timeTicks.length]).range([0, self.chartWidth]).distortion(0);
 
-            self.timeScaleFisheye_top = d3.fisheye.scale(d3.scale.linear).domain([0, self.timeTicks[(self.timeTicks.length-1)]]).range([0, self.chartWidth]).distortion(0);
+            //self.timeScaleFisheye_top = d3.fisheye.scale(d3.scale.linear).domain([0, self.timeTicks[(self.timeTicks.length-1)]]).range([0, self.chartWidth]).distortion(0);
             //self.timeSteps =  d3.range(0, self.chartWidth, tickWidth);
             self.timeTickWidth = tickWidth;            
 
@@ -136,6 +163,23 @@ VIS.CHART.WIDGET.creditVisWidget = function (options) {
             self.end_time = end_time;
             self.tickLen = tickLen*timeInterval;
 
+            var labelSize = self.settings.oneSideTickCount;
+            var perlen = Math.floor(self.timeTicks.length/labelSize);
+            var array = [];
+            self.bottomTickArray = [];
+            self.topTickArray = [];
+            for(var i=0;i<=tickCnt;i+=perlen){
+                array.push(i);
+            }
+            array.forEach(function(d,i){
+                if(i%2===0){
+                    self.bottomTickArray.push(d);
+                }else{
+                    self.topTickArray.push(d);
+                }
+            });
+            //self.labelTicks = array;
+            
         },
         _generateChart:function(){
             var self = this;
@@ -146,12 +190,16 @@ VIS.CHART.WIDGET.creditVisWidget = function (options) {
             self.chart.append('g').attr('class','bottomArea');
             
             self.chart.append('g').attr('class','linkLayer');
-
-
+            self.topNonFocusPos = self.nonFocus_height;
+            self.bottomSideFocusPos = 0;
+            var bottomAreaY = (self.topAreaHeight+self.middleAreaHeight);
+            var roundCorner = self.settings.naviBarRoundCorner;            
 
             self._generateBottomArea();
             self._generateTopArea();
-            self.topNonFocusPos = self.nonFocus_height;
+
+
+            
 
             var drag = d3.behavior.drag()
             .on("drag", function(d,i) {
@@ -165,7 +213,19 @@ VIS.CHART.WIDGET.creditVisWidget = function (options) {
                 })
             });
 
-            var roundCorner = self.settings.naviBarRoundCorner;
+            var bottomSide_drag = d3.behavior.drag()
+            .on("drag", function(d,i) {
+                d.y += d3.event.dy;
+                d.y = Math.max( (0-self.settings.yNaviBarHeight/2) ,Math.min(d.y, (self.bottomAreaHeight-self.settings.yNaviBarHeight)))
+                self.bottomSideFocusPos= (d.y+self.settings.yNaviBarHeight/2);
+                self._generateBottomArea();
+                self._generateLinks();
+                d3.select(this).attr("y", function(d,i){
+                    return d.y+bottomAreaY;
+                })
+            }); 
+
+            
 
             self.chart.append('rect')
             .datum({y:self.nonFocus_height})
@@ -176,7 +236,19 @@ VIS.CHART.WIDGET.creditVisWidget = function (options) {
             .attr('height',self.settings.yNaviBarHeight)
             .attr('rx',roundCorner)
             .attr('ry',roundCorner)            
-            .call(drag);             
+            .call(drag);
+
+            self.chart.append('rect')
+            .datum({y:self.bottomSideFocusPos})
+            .attr('class','navBar bottomSideBar')
+            .attr('x',0-self.settings.yNaviBarWidth)
+            .attr('y', bottomAreaY+0-self.settings.yNaviBarHeight/2)
+            .attr('width',self.settings.yNaviBarWidth)
+            .attr('height',self.settings.yNaviBarHeight)
+            .attr('display',self.bottom_layerHeight<self.settings.minLayerNoDistortion?'block':'none')
+            .attr('rx',roundCorner)
+            .attr('ry',roundCorner)            
+            .call(bottomSide_drag);                         
 
                     
             self._generateMidArea();
@@ -246,6 +318,23 @@ VIS.CHART.WIDGET.creditVisWidget = function (options) {
             topArea.append('line').attr('class','areaBorder')
             .attr('x1',self.settings.rowLabelWidth)
             .attr('x2',self.chartWidth+self.settings.rowLabelWidth).attr('y1',self.topAreaHeight).attr('y2',self.topAreaHeight);
+            
+            var xAxis = d3.svg.axis()
+            .orient("bottom")
+            .tickValues(self.topTickArray)
+            .scale(self.timeScaleFisheye_top)
+            .tickFormat(function(d){
+                var timeStamp = window.CHART.UTILS.getTimeByIndex(self.start_time,self.end_time,d, self.chartWidth,self.settings.minTickWidth);
+                var format = d3.time.format(self.settings.timeFormat);
+                return format(new Date(timeStamp));
+            });
+
+            topArea.append("g")
+            .attr("class", "xaxis")   // give it a class so it can be used to select only xaxis labels  below
+            .attr("transform", "translate("+self.settings.rowLabelWidth+","+self.topAreaHeight+")")
+            .call(xAxis);
+
+
             var focus_height = self.settings.numTopFocusLayer*self.bottom_layerHeight;
             var nonFocus_height = self.topAreaHeight- focus_height;
             self.nonFocus_height = nonFocus_height;
@@ -316,8 +405,7 @@ VIS.CHART.WIDGET.creditVisWidget = function (options) {
                 .attr('transform','translate('+self.settings.rowLabelWidth+',0)');
 
                 var labels = d3.select(this).append('g')
-                .attr('class','rowLabelArea').call(self._generateRowLabels, self); 
-               
+                .attr('class','rowLabelArea').call(self._generateRowLabels, self);                
                 /*
                 var tranCells = layer.selectAll('.tranCell').data(d.suspectTran)
                 .enter()
@@ -368,7 +456,8 @@ VIS.CHART.WIDGET.creditVisWidget = function (options) {
                     var dist = Math.floor(x_end-x_start); 
                     var key, subTicks, subTickIndex,start_time,end_time;
                     if(dist<=self.timeTickWidth){
-                       key = timeIndex; 
+                       key = timeIndex;
+                       d.subTickIndex=undefined;
                     }else{
                         var zoomTickWidth = self.settings.minTickWidth*self.settings.zoomTickRate;
                         start_time =  window.CHART.UTILS.getTimeByIndex(self.start_time,self.end_time,d.timeIndex, self.chartWidth,self.settings.minTickWidth);
@@ -398,7 +487,14 @@ VIS.CHART.WIDGET.creditVisWidget = function (options) {
                 });
                 var keys = Object.keys(obj);
                 keys.forEach(function(k){
-                    obj[k].tranByPeople = window.CHART.UTILS.groupTranArrayByPeople( obj[k].tran);
+                    obj[k].tranByPeople = window.CHART.UTILS.groupTranArrayByPeople( obj[k].tran, self.data.peopleList);
+                    var temp = [];
+                    obj[k].tranByPeople.forEach(function(p){
+                        p.forEach(function(ttt){
+                            temp.push(ttt);
+                        });
+                    });
+                    obj[k].tran=temp;
                 });
                 return obj;            
         },           
@@ -416,12 +512,19 @@ VIS.CHART.WIDGET.creditVisWidget = function (options) {
                 layerTranByTime.push(self._getLayerTranByTime(tranData, timeScale));
             });
 
+            if(isTop){
+                self.topTickTranDict = layerTranByTime;
+            }else{
+                self.bottomTickTranDict = layerTranByTime;
+            }
+
             
             g.each(function(d,i){
                 var index = d.index;
                 var layerTranTime = layerTranByTime[index];
                 var keys = Object.keys(layerTranTime);
                 var layerMax = d3.max(keys, function(t){
+                    layerTranTime[t].layer= index;
                     return layerTranTime[t].total;
                 });
                 totalMaxAmount = Math.max(totalMaxAmount, layerMax);                
@@ -429,14 +532,16 @@ VIS.CHART.WIDGET.creditVisWidget = function (options) {
             g.each(function(d,i){
                 var index = d.index;
                 var layerTranTime = layerTranByTime[index];
-                var layerHeight =isTop?d.layer_height:self.bottom_layerHeight;
+                //var layerHeight =isTop?d.layer_height:self.bottom_layerHeight;
+                var layerHeight = d.layer_height;
                 var heightScale = d3.scale.linear().domain([0,totalMaxAmount]).range([0,layerHeight*0.8]);                
 
                 var keys = Object.keys(layerTranTime);
                 var layer = d3.select(this).selectAll('.layerArea');
                 keys.forEach(function(k){
                     layer.append('g').datum(layerTranTime[k])
-                    .attr('class','tickTran');
+                    .attr('class','tickTran')
+                    .attr('id','tickTran'+k);
                 });
 
                 layer.selectAll('.tickTran').each(function(tt){
@@ -608,11 +713,25 @@ VIS.CHART.WIDGET.creditVisWidget = function (options) {
             var layerHeight = self.bottomAreaHeight/self.data.fraudStore.length;
             self.bottom_layerHeight = layerHeight;
 
+
+            var yFisheye = d3.fisheye.scale(d3.scale.identity).domain([0, self.bottomAreaHeight]).distortion(1);            
+            if(self.bottom_layerHeight>self.settings.minLayerNoDistortion){
+                yFisheye.distortion(0);
+                //self.chart.selectAll('.bottomSideBar').attr('display','none');
+            }else{
+                //self.bottomSideBar.attr('display','block');
+                yFisheye.distortion(self.settings.fisheyeZoomRate);
+                yFisheye.focus(self.bottomSideFocusPos);                
+            }
+            var ySteps =  d3.range(0, self.bottomAreaHeight, layerHeight);
+
             var layers = bottomArea.selectAll('.bottomLayer').data(self.data.fraudStore).enter()
             .append('g').attr('class','nodeLayer bottomLayer').attr('transform',function(d,i){
-                d.layer_height = layerHeight;
+                var y = yFisheye(ySteps[i-1] || 0) + (yFisheye(ySteps[i]) - yFisheye(ySteps[i-1] || 0));
+                d.layer_y = y;
+                d.layer_height = (yFisheye(ySteps[i+1]|| self.bottomAreaHeight) - yFisheye(ySteps[i]));
                 d.index = i;
-                return 'translate(0,'+i*layerHeight+')';
+                return 'translate(0,'+y+')';
             });
 
             bottomArea.append('line').attr('class','areaBorder')
@@ -621,6 +740,7 @@ VIS.CHART.WIDGET.creditVisWidget = function (options) {
 
             var xAxis = d3.svg.axis()
             .orient("top")
+            .tickValues(self.bottomTickArray)
             .scale(self.timeScaleFisheye_bottom)
             .tickFormat(function(d){
                 var timeStamp = window.CHART.UTILS.getTimeByIndex(self.start_time,self.end_time,d, self.chartWidth,self.settings.minTickWidth);
@@ -632,19 +752,12 @@ VIS.CHART.WIDGET.creditVisWidget = function (options) {
             .attr("class", "xaxis")   // give it a class so it can be used to select only xaxis labels  below
             .attr("transform", "translate("+self.settings.rowLabelWidth+",0)")
             .call(xAxis);
-            /*
-            var layerTranByTime = [];
-            self.data.fraudStore.forEach(function(d){
-                var layerAggData = self._getLayerTranByTime(d.tran);
-                layerTranByTime.push(layerAggData);
-
-            });*/
 
 
             layers.each(function(d,i){
                 d3.select(this).append('rect').attr('class', i%2===0?'layerBackground even':'layerBackground odd')
                 .attr('width',(self.chartWidth+self.settings.rowLabelWidth))
-                .attr('height',layerHeight);                
+                .attr('height',d.layer_height);                
                 
                 var labels = d3.select(this).append('g')
                 .attr('class','rowLabelArea').call(self._generateRowLabels, self);
@@ -669,7 +782,7 @@ VIS.CHART.WIDGET.creditVisWidget = function (options) {
                     //t.y = y;
                     var y = t.y;
                     t.layer = i;
-                    t.y+=i*layerHeight;
+                    t.y+=(d.layer_y);
                     return 'translate('+t.x+','+y+')';                  
                 });
                 tranCells.append('rect')
@@ -724,7 +837,8 @@ VIS.CHART.WIDGET.creditVisWidget = function (options) {
             .attr('r',function(d){
                 d.radius = dotSizeScale(d.fraudAmount);
                 return dotSizeScale(d.fraudAmount);
-            });            
+            })
+             .attr('fill', 'url(#gradient)');            
             var dotSize = self.settings.dotSize;
               force.start();
               for (var i = step * step; i > 0; --i) force.tick();
@@ -778,14 +892,15 @@ VIS.CHART.WIDGET.creditVisWidget = function (options) {
         },
         _generateBottomCurveLinks:function(){
             var self = this;
-            var linkMaxWidth = self.settings.dotSize*self.settings.linkWidthRate;
-            var linkWidthScale = d3.scale.linear().domain([0, self.maxTranAmountBottom]).range([0, linkMaxWidth]);
+            var linkOffsetDist =self.settings.linkConnectOffsetDist;
             var lineFunction = d3.svg.line()
               .x(function(d) { return d[0]; })
               .y(function(d) { return d[1]; })
-              //.interpolate('cardinal');
-              //.interpolate('basis');
               .interpolate('bundle');
+            var lineConnectFunction = d3.svg.line()
+              .x(function(d) { return d[0]; })
+              .y(function(d) { return d[1]; })
+              .interpolate('cardinal');               
 
             var lineFunctionCardinal = d3.svg.line()
               .x(function(d) { return d[0]; })
@@ -794,6 +909,7 @@ VIS.CHART.WIDGET.creditVisWidget = function (options) {
 
             var tranDistDict = {};
             var linkLayer = self.chart.selectAll('.linkLayer').append('g').attr('class','bottomLinkLayer');
+            var maxFocusAmount = 0;
 
             self.chart.selectAll('.bottomLayer').selectAll('.tickTran')
             .each(function(d,i){
@@ -815,12 +931,16 @@ VIS.CHART.WIDGET.creditVisWidget = function (options) {
                     });
                     ypos = ypos/l.length;    
                     groupData.ypos = ypos;
-                    groupData.xpos = l[0].x; 
+                    groupData.xpos = l[0].x- linkOffsetDist; 
                     groupData.layer = l[0].layer;               
                     groupData.customer_name = l[0].customer_name;
                     groupData.timeIndex = l[0].timeIndex;
-                    linkLayer.append('g').datum(groupData).attr('class','tranLink'); 
-                    
+                    groupData.totalAmount = totalAmount;
+                    linkLayer.append('g').datum(groupData).attr('class','tranLink');
+                    if(groupData.bottomFocus){
+                         maxFocusAmount = Math.max(maxFocusAmount, totalAmount);
+                    } 
+                   
 
                     var parent_elem = l[0];
                     var name= parent_elem.customer_name;
@@ -849,6 +969,8 @@ VIS.CHART.WIDGET.creditVisWidget = function (options) {
                     }                    
                 });
             });
+            
+
             var keys = Object.keys(tranDistDict);
             keys.forEach(function(k){
                 tranDistDict[k].points.sort(function(a,b){
@@ -870,7 +992,13 @@ VIS.CHART.WIDGET.creditVisWidget = function (options) {
                 if(l.layer<=2){
                         var x2 = l.xpos+self.settings.rowLabelWidth;
                         var y2 = (self.topAreaHeight+self.middleAreaHeight)+l.ypos;
-                        points = [[x1,y1],[x1,y2],[x2,y2]];
+                        var cpoint = [];
+                        if(x2>x1){
+                            cpoint =[x1,y2];
+                        }else{
+                            cpoint =[x2-(x1-x2),y2];
+                        }
+                        points = [[x1,y1],cpoint,[x2,y2]];
                         lineGraph = d3.select(this)
                           .append('path')
                           .attr('class',l.bottomFocus?'link bottomFocus':'link bottomContext')
@@ -902,10 +1030,22 @@ VIS.CHART.WIDGET.creditVisWidget = function (options) {
                           .attr('d', lineFunctionCardinal(points))
                           .attr("fill", "none");
 
-                        if(self.settings.enableWeightedLine){
-                            lineGraph.style('stroke-width',linkWidthScale(l.totalAmount)+'px');
-                        }      
+    
                 }
+
+                    var linkWidthScale = d3.scale.pow().domain([0, maxFocusAmount]).range([self.settings.minFocusLinkWidth, self.settings.maxFocusLinkWidth]);                
+                  if(self.settings.enableWeightedLine&&l.bottomFocus){
+                            var w = linkWidthScale(l.totalAmount);
+                            lineGraph.style('stroke-width',w+'px');
+                    }                  
+                    var lastPoints = points[(points.length-1)];
+                    var connectPoints = window.CHART.UTILS.generateConnectPath(lastPoints[0],lastPoints[1],l.tran, true, self.settings.rowLabelWidth,(self.topAreaHeight+self.middleAreaHeight));
+                    
+                    d3.select(this)
+                          .append('path')
+                          .attr('class',l.bottomFocus?'link bottomFocus connect':'link bottomContext connect')
+                          .attr('d', lineConnectFunction(connectPoints));
+
             });
 
 
@@ -913,7 +1053,7 @@ VIS.CHART.WIDGET.creditVisWidget = function (options) {
         },
         _generateTopCurveLinks:function(){
             var self = this;
-
+            var linkOffsetDist =self.settings.linkConnectOffsetDist;
             var lineFunction = d3.svg.line()
               .x(function(d) { return d[0]; })
               .y(function(d) { return d[1]; })
@@ -921,7 +1061,18 @@ VIS.CHART.WIDGET.creditVisWidget = function (options) {
               //.interpolate('basis');
               .interpolate('bundle');
 
+            var lineConnectFunction = d3.svg.line()
+              .x(function(d) { return d[0]; })
+              .y(function(d) { return d[1]; })
+              //.interpolate('cardinal');
+              //.interpolate('basis');
+              .interpolate('cardinal');   
+
+            var maxFocusAmount = 0;           
+
             var linkLayer = self.chart.selectAll('.linkLayer').append('g').attr('class','topLinkLayer');
+            linkLayer.append('g').attr('class','nonFocusLinkArea');
+            linkLayer.append('g').attr('class','focusLinkArea');
             self.chart.selectAll('.topArea').selectAll('.tickTran')
             .each(function(d,i){
                 var tranPeopleList = d.tranByPeople;
@@ -929,26 +1080,56 @@ VIS.CHART.WIDGET.creditVisWidget = function (options) {
                     var groupData = {
                         tran:l,
                     };
-                    
+
+                    groupData.layer = d.layer; 
+                    groupData.customer_name = l[0].customer_name;
+                    groupData.timeIndex = l[0].timeIndex;  
+                    groupData.cellWidth = l[0].cellWidth;
+                    var people = self.data.peopleList.filter(function(p){
+                        return p.customer_name===groupData.customer_name;
+                    });                    
+
                     l.forEach(function(ll){
                         if(ll.topFocus){
                             groupData.topFocus = true;
                         }
                     });
+
+                    var layerTickTran = self.topTickTranDict[groupData.layer];
+                    if(groupData.timeIndex>0&&layerTickTran[(groupData.timeIndex-1)]){
+                        groupData.showLeft = !layerTickTran[(groupData.timeIndex-1)].showLeft;
+                    }else{
+                        if(people[0].x>(l[0].x+groupData.cellWidth)){
+                            groupData.showLeft = false;
+                        }else{
+                            groupData.showLeft = true;
+                        }
+                    }
+                    var key = l[0].subTickIndex===undefined?groupData.timeIndex:groupData.timeIndex+'_'+l[0].subTickIndex;
+                    if(layerTickTran[key]){
+                        layerTickTran[key].showLeft = groupData.showLeft;
+                    }
+                    
+                    //layerTickTran[key].showLeft = groupData.showLeft;
+                    
                     var ypos = 0, totalAmount=0;
                     l.forEach(function(t){
                         ypos+=(t.y+t.cellHeight/2);
                         totalAmount+=t.amount;
                     });
-                    ypos = ypos/l.length;    
+                    if(groupData.topFocus){
+                         maxFocusAmount = Math.max(maxFocusAmount, totalAmount);
+                    } 
+
+                    ypos = ypos/l.length;
+                    groupData.totalAmount = totalAmount;  
                     groupData.ypos = ypos;
-                    groupData.xpos = l[0].x;
-                    groupData.cellWidth = l[0].cellWidth; 
-                    groupData.layer = l[0].layer;               
-                    groupData.customer_name = l[0].customer_name;
-                    groupData.timeIndex = l[0].timeIndex;
-                    linkLayer.append('g').datum(groupData).attr('class','tranLink');
-            });  
+                    groupData.xpos =groupData.showLeft?(l[0].x-linkOffsetDist):(l[0].x+groupData.cellWidth+linkOffsetDist);
+                    var layer = groupData.topFocus?linkLayer.selectAll('.focusLinkArea'):linkLayer.selectAll('.nonFocusLinkArea');                                   
+                    layer.append('g').datum(groupData).attr('class','tranLink');
+            }); 
+                var linkWidthScale = d3.scale.pow().domain([0, maxFocusAmount]).range([self.settings.minFocusLinkWidth, self.settings.maxFocusLinkWidth]);                
+
 
                 linkLayer.selectAll('.tranLink').each(function(l){
                     var name= l.customer_name;
@@ -958,16 +1139,34 @@ VIS.CHART.WIDGET.creditVisWidget = function (options) {
                     var x1 = people[0].x+self.settings.rowLabelWidth;
                     var y1 = people[0].y+self.topAreaHeight;      
                     var points; 
-                    var x2 = people[0].x>(l.xpos+l.cellWidth)?(l.xpos+l.cellWidth):l.xpos;
+                    //var x2 = people[0].x>(l.xpos+l.cellWidth)?(l.xpos+l.cellWidth):l.xpos;
+                    var x2 = l.xpos;
                     x2+=self.settings.rowLabelWidth;
                     var y2 = l.ypos;
-                    points = [[x1,y1],[x1,y2],[x2,y2]];
+                    var cpoint = [];
+                    if(x2>x1){
+                        cpoint =l.showLeft?[x1,y2]:[(x2+(x2-x1)),y2];
+                    }else{
+                        cpoint =l.showLeft?[x2-(x1-x2),y2]:[(x1+(x1-x2)),y2];
+                    }
+                    points = [[x1,y1],cpoint,[x2,y2]];
 
-                    var lineGraph = d3.select(this)
+                    var link = d3.select(this)
                           .append('path')
                           .attr('class',l.topFocus?'link topFocus':'link topContext')
                           .attr('d', lineFunction(points))
                           .attr("fill", "none");
+                    if(self.settings.enableWeightedLine&&l.topFocus){
+                            var w = linkWidthScale(l.totalAmount);
+                            link.style('stroke-width',w+'px');
+                    }  
+                    var connectPoints = window.CHART.UTILS.generateConnectPath(x2,y2,l.tran, l.showLeft, self.settings.rowLabelWidth);
+                    
+                    d3.select(this)
+                          .append('path')
+                          .attr('class',l.topFocus?'link topFocus connect':'link topContext connect')
+                          .attr('d', lineConnectFunction(connectPoints));
+                          //.attr("fill", "none");
                 });       
 
             });
